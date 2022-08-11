@@ -1,7 +1,7 @@
 <template>
   <div class="cd-month">
     <slot></slot>
-    <div class="cd-days--container">
+    <div v-loading="isLoading" class="cd-days--container">
       {{ days }}
     </div>
   </div>
@@ -9,14 +9,20 @@
 
 <script>
 import { getDays } from '@/common/month-days'
+import { Loading } from 'element-ui'
 
 const formatter = (locale, date, options = { month: 'long' }) => (new Intl.DateTimeFormat(locale, options).format(date))
+
 export default {
   name: 'cd-month',
   props: {
-    sixdays: { type: Boolean, default: false, description: 'Шестидневная рабочая неделя' },
+    sixDays: { type: Boolean, default: false, description: 'Шестидневная рабочая неделя' },
     date: { type: Date, required: true, description: 'Начальная дата календаря' },
     locale: { type: String, default: 'ru-RU', description: 'Локаль календаря' },
+    prependDays: { type: Boolean, default: true, description: 'Дополнять ли массив дней месяца днями предыдущего месяца' }
+  },
+  directives: {
+    'loading': Loading
   },
   data (calendar) {
     return {
@@ -25,23 +31,11 @@ export default {
         Year: calendar.date.getFullYear(),
         Day: calendar.date.getDate()
       },
-      days: [],
+      days: getDays(calendar.date).then(response => {
+        calendar.days = response
+        calendar.isLoading = false
+      }),
       isLoading: Boolean
-    }
-  },
-  watch: {
-    date: {
-      handler (newvalue) {
-        if (newvalue !== undefined) {
-          const calendar = this
-          calendar.isLoading = true
-    
-          getDays(newvalue, (result) => {
-            calendar.days = result
-            calendar.isLoading = false
-          })
-        }
-      }
     }
   },
   computed: {
