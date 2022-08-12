@@ -1,5 +1,6 @@
 import moment from 'moment'
 import axios from 'axios'
+moment.locale('ru')
 
 const daysInMonth = (year, month) => (moment(`${year}-${month}-01`, 'YYYY-MM')).daysInMonth()
 const createDate = (year, month, day) => (moment(`${year}-${month}-${day}`, 'YYYY-MM-DD'))
@@ -48,9 +49,12 @@ const getDays = (date, options = { pre: 1, covid: 1, sd: 0 }) => {
 const weekdays = (
   [1, 2, 3, 4, 5, 6, 7]
     .map(d => ({
-      weekday: moment().isoWeekday(d),
+      weekday: {
+        short: moment().isoWeekday(d).format('dd'),
+        long: moment().isoWeekday(d).format('dddd')
+      },
       order: d,
-      day: (d - 1)
+      day: d % 7
     })
 ))
 export {
