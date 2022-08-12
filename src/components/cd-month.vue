@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { getDays } from '@/common/month-days'
+import { prevMonthDays, getDays, weekdays } from '@/common/month-days'
 import { Loading } from 'element-ui'
 
 const formatter = (locale, date, options = { month: 'long' }) => (new Intl.DateTimeFormat(locale, options).format(date))
@@ -26,13 +26,16 @@ export default {
   },
   data (calendar) {
     return {
+      weekdays: weekdays,
       payload: {
         MonthID: calendar.date.getMonth() + 1,
         Year: calendar.date.getFullYear(),
         Day: calendar.date.getDate()
       },
       days: getDays(calendar.date).then(response => {
-        calendar.days = response
+        calendar.days = calendar.prependDays
+          ? (prevMonthDays(calendar.date)).concat(response) 
+          : response,
         calendar.isLoading = false
       }),
       isLoading: Boolean
