@@ -26,12 +26,6 @@ export default {
   },
   data (calendar) {
     return {
-      weekdays: weekdays,
-      payload: {
-        MonthID: calendar.date.getMonth() + 1,
-        Year: calendar.date.getFullYear(),
-        Day: calendar.date.getDate()
-      },
       days: getDays(calendar.date).then(response => {
         calendar.days = calendar.prependDays
           ? (prevMonthDays(calendar.date)).concat(response) 
@@ -42,15 +36,14 @@ export default {
     }
   },
   computed: {
-    formatDate () {
-      return formatter(this.locale, this.date)
+    weekdays () {
+      return this.weekmap(this.days)
     }
   },
   methods: {
-    populateDays(payload) {
+    weekmap (days) {
+      return (weekdays.map(wd => ({ weekday: wd, details: (days.filter(d => d.date.day() === wd.day)) })))
     }
-  },
-  mounted () {
   }
 }
 
