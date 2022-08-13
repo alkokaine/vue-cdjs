@@ -1,8 +1,12 @@
-const itemroles = []
-const listroles = []
+const listroles = ['directory', 'group', 'listbox', 'menu', 'menubar', 'none', 'presentation', 'radiogroup', 'tablist', 'toolbar', 'tree']
+const itemroles = ['menuitem', 'menuitemcheckbox', 'menuitemradio', 'option', 'none', 'presentation', 'radio', 'separator', 'tab', 'treeitem']
 
-const validateItemRole = (value) => (itemroles.indexOf(value) >= 0)
-const validateListRole = (value) => (listroles.indexOf(value) >= 0)
+function validateItemRole (value) {
+    return itemroles.indexOf(value) >= 0
+}
+function validateListRole (value) {
+    return listroles.indexOf(value) >= 0
+}
 
 export default { 
     validateItemRole, validateListRole
