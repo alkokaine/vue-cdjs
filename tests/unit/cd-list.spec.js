@@ -140,4 +140,37 @@ describe('CD-LIST', () => {
     expect(warn.err).toBe("Invalid prop: custom validator check failed for prop \"itemRole\".")
     done()
   })
+  it ('CD-LIST: has default scoped elements', done => {
+    const wrapper = mount(CDList, { propsData: {
+      collection: [{ datafield: 'object_id', text: 'object_id' }, { datafield: 'building_id', text: 'building_id' }, { datafield: 'parent_id', text: 'parent_id' }],
+      rowClass: 'simple-row-class',
+      itemRole: 'foobar',
+      keyfield: 'datafield'
+    }})
+    Vue.nextTick().then(() => {
+      const defaults = wrapper.findAll('.cd-list--item-default')
+      expect(defaults.length).toBe(3)
+      done()
+    })
+  })
+  it ('CD-LIST: has custom scoped elements', done => {
+    const scopeddata = {
+      collection: [{ datafield: 'object_id', text: 'object_id' }, { datafield: 'building_id', text: 'building_id' }, { datafield: 'parent_id', text: 'parent_id' }],
+      rowClass: 'simple-row-class',
+      keyfield: 'datafield',
+    }
+    const wrapper = mount(CDList, {
+      propsData: scopeddata,
+      scopedSlots: {
+        row: '<div class="scoped-item-class" slot-scope="row">{{ row }}foobar</div>'
+      }
+    })
+    Vue.nextTick().then(() => {
+      const defaults = wrapper.findAll('.scoped-item-class')
+      expect(defaults.length).toBe(3)
+      const constains = defaults.wrappers.map(d => d.text().indexOf('foobar') >= 0)
+      expect(constains.every(e => e === true)).toBeTruthy()
+      done()
+    })
+  }, 100000)
 })

@@ -7,7 +7,14 @@
       <li v-if="$slots.placeholder" class="cd-list--item placeholder">
         <slot name="placeholder"></slot>
       </li>
-      <li v-for="(row, index) in rows" :key="rowkey(row, index)" :class="['cd-list--item', resolveRowClass(row, index)]"></li>
+      <li v-for="(row, index) in rows" :key="rowkey(row, index)" :id="rowkey(row, index)" :class="['cd-list--item', resolveRowClass(row, index)]">
+        <slot name="row" index="index" row="row">
+          <div class="cd-list--item-default">
+            <p>index: {{ index }}</p>
+            <p>row: {{ row }}</p>
+          </div>
+        </slot>
+      </li>
     </ul>
     <div v-if="$slots.footer" class="cd-list--footer">
       <slot name="footer"></slot>
