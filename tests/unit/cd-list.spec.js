@@ -162,7 +162,7 @@ describe('CD-LIST', () => {
     const wrapper = mount(CDList, {
       propsData: scopeddata,
       scopedSlots: {
-        row: '<div class="scoped-item-class" slot-scope="row">{{ row }}foobar</div>'
+        default: '<div class="scoped-item-class" slot-scope="row">{{ row }}foobar</div>'
       }
     })
     Vue.nextTick().then(() => {
