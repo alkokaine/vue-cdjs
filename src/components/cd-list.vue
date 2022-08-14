@@ -8,7 +8,7 @@
         <slot name="placeholder"></slot>
       </li>
       <li v-for="(row, index) in rows" :key="rowkey(row, index)" :id="rowkey(row, index)" :class="['cd-list--item', resolveRowClass(row, index)]">
-        <slot name="row" index="index" row="row">
+        <slot :index="index" :row="row">
           <div class="cd-list--item-default">
             <p>index: {{ index }}</p>
             <p>row: {{ row }}</p>
