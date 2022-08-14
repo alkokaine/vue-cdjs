@@ -21,7 +21,6 @@ describe('cd-month', () => {
     date: testdate.toDate(),
     sixDays: true
   }
-
   const doNotPrepend = {
     date: testdate.toDate(),
     sixDays: true,
@@ -39,52 +38,21 @@ describe('cd-month', () => {
   const days_in_month = testdate.daysInMonth()
   const weekday = testdate.format('dddd')
   const _x = prevMonthWeekLength(testdate.toDate())
-  it (`CD-MONTH (Days amount): ${month_header} has ${days_in_month} days and starts with ${weekday}, so calendar will have ${(days_in_month + _x)} days in [days] property`, done => {
-    const wrapper = mountcalendar(propsData)
-    Vue.nextTick().then(() => {
-      wrapper.vm.days.then(() => {
-        expect(wrapper.vm.days.length).toBe((days_in_month + _x))
-        done()
-      })
-    })
-  }, 100000)
-  it (`CD-MONTH (Days amount): if prependDays set true, there will be ${_x} days, where [day.isprev == true]`, done => {
-    const wrapper = mountcalendar(propsData)
-    Vue.nextTick().then(() => {
-      wrapper.vm.days.then(() => {
-        const prev_count = wrapper.vm.days.filter(f => f.isprev === true).length
-        expect(prev_count).toBe(_x)
-        done()
-      })
-    })
-  }, 100000)
-  it (`CD-MONTH (Days amount): if prependDays is false, there will be ${days_in_month} days in [days] property`, (done) => {
-    const wrapper = mountcalendar(doNotPrepend)
-    Vue.nextTick().then(() => {
-      wrapper.vm.days.then(() => {
-        expect(wrapper.vm.days.length).toBe(testdate.daysInMonth())
-        done()
-      })
-    })
-  }, 100000)
-  it ('CD-MONTH (Weekday list): contains 7 instances <li> elements', (done) => {
-    const wrapper = mountcalendar(propsData)
-    Vue.nextTick().then(() => {
-      const weekdays = wrapper.findAll('li')
-      expect(weekdays.length).toBe(7)
-      done()
-    })
-  }, 100000)
+ 
   it ('CD-MONTH (Weekday list): contains 7 instances of [.cd-weekday--container] class', done => {
     const wrapper = mountcalendar(propsData)
-    wrapper.vm.days.then(() => {
+    wrapper.vm.monthdays.then(() => {
       Vue.nextTick().then(() => {
-        const weekdays = wrapper.findAll('ul')
-        const cdlists = weekdays.wrappers.map(wd => wd.findAll('.cd-weekday--list').length)
-        expect(cdlists.length).toBe(7)
+        const weekdays = wrapper.findAll('.cd-weekday--container')
+        const headers = wrapper.findAll('.cd-weekday--header')
+        const weekdaylist = wrapper.findAll('.cd-weekday--list')
+        const days = wrapper.findAll('.cd-day')
+        expect(weekdays.length).toBe(7)
+        expect(headers.length).toBe(7)
+        expect(weekdaylist.length).toBe(7)
+        expect(days.length).toBe(days_in_month + _x)
         done()
       })
     })
-    
   }, 100000)
 })
