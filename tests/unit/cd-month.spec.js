@@ -1,6 +1,7 @@
 import { createDate, prevMonthWeekLength } from '@/common/month-days'
 import { mount } from '@vue/test-utils'
 import CDMonth from '@/components/cd-month'
+import CDDay from '@/components/cd-day'
 import Vue from 'vue'
 // Vue.config.errorHandler = (...args) => {
 //   console.error(args)
@@ -46,7 +47,7 @@ describe('cd-month', () => {
         const weekdays = wrapper.findAll('.cd-weekday--container')
         const headers = wrapper.findAll('.cd-weekday--header')
         const weekdaylist = wrapper.findAll('.cd-weekday--list')
-        const days = wrapper.findAll('.cd-day')
+        const days = wrapper.findAllComponents(CDDay)
         expect(weekdays.length).toBe(7)
         expect(headers.length).toBe(7)
         expect(weekdaylist.length).toBe(7)

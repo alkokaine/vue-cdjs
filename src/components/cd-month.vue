@@ -3,13 +3,13 @@
     <slot></slot>
     <div v-loading="isLoading" class="cd-days--container">
       <cd-list :collection="weekdays" keyfield="day" rowClass="cd-weekday--container col" list-class="list-unstyled container row">
-        <cd-list v-if="monthdays.length" slot-scope="{ row }" keyfield="day" class="cd-weekday--list-wrapper" list-class="cd-weekday--list list-unstyled container" row-class="cd-day p-1 m-1 border border-1" :collection="resolvedays(row)">
+        <cd-list v-if="monthdays.length" slot-scope="{ row }" keyfield="day" class="cd-weekday--list-wrapper" list-class="cd-weekday--list list-unstyled container" row-class="cd-day p-1 m-1 border border-1 text-center" :collection="resolvedays(row)">
           <div slot="header" class="cd-weekday--header text-center">
-            {{ row.weekday.long }}
+            {{ row.weekday.short }}
           </div>
-          <div slot-scope="day" class="cd-day--content" :class="{ 'is-prev': day.row.isprev }">
+          <cd-day slot-scope="day" :date="resolvedate(day.row)" class="cd-day--content" :class="{ 'is-prev': day.row.isprev }">
             {{ day.row.date }}
-          </div>
+          </cd-day>
         </cd-list>
       </cd-list>
     </div>
@@ -20,6 +20,7 @@
 import { prevMonthDays, getDays, weekdays } from '@/common/month-days'
 import { Loading } from 'element-ui'
 import CDList from '@/components/cd-list.vue'
+import CDDay from '@/components/cd-day.vue'
 const formatter = (locale, date, options = { month: 'long' }) => (new Intl.DateTimeFormat(locale, options).format(date))
 
 export default {
@@ -34,7 +35,8 @@ export default {
     'loading': Loading
   },
   components: {
-    'cd-list': CDList
+    'cd-list': CDList,
+    'cd-day': CDDay
   },
   data (calendar) {
     return {
@@ -71,6 +73,9 @@ export default {
       return (row) => {
         return month.monthdays.filter(d => d.date.day() === row.day)
       }
+    },
+    resolvedate () {
+      return (row) => row.date.toDate()
     }
   },
   methods: {
@@ -85,5 +90,8 @@ export default {
   }
   .is-prev {
     opacity: 42%;
+    pointer-events: none;
+    cursor: default;
+    user-select: none;
   }
 </style>
