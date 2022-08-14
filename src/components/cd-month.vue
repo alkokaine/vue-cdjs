@@ -2,7 +2,15 @@
   <div class="cd-month">
     <slot></slot>
     <div v-loading="isLoading" class="cd-days--container">
-      {{ days }}
+      <cd-list :collection="weekdays" keyfield="day" rowClass="cd-weekday--container">
+        <template slot-scope="scope">
+          <cd-list keyfield="day" class="cd-weekday--list" row-class="cd-day" :collection="scope.row.details">
+            <div slot="header" class="cd-weekday--header">
+              {{index}}: {{ scope.row.weekday.long }}
+            </div>
+          </cd-list>
+        </template>
+      </cd-list>
     </div>
   </div>
 </template>
@@ -10,7 +18,7 @@
 <script>
 import { prevMonthDays, getDays, weekdays } from '@/common/month-days'
 import { Loading } from 'element-ui'
-
+import CDList from '@/components/cd-list.vue'
 const formatter = (locale, date, options = { month: 'long' }) => (new Intl.DateTimeFormat(locale, options).format(date))
 
 export default {
@@ -24,8 +32,12 @@ export default {
   directives: {
     'loading': Loading
   },
+  components: {
+    'cd-list': CDList
+  },
   data (calendar) {
     return {
+      weekdays,
       days: getDays(calendar.date).then(response => {
         calendar.days = calendar.prependDays
           ? (prevMonthDays(calendar.date)).concat(response) 
@@ -36,14 +48,17 @@ export default {
     }
   },
   computed: {
-    weekdays () {
-      return this.weekmap(this.days)
-    }
+    weekdayid () {
+      return (row, index) => row.day
+    },
+    // weekdays () {
+    //   return this.weekmap(this.days)
+    // }
   },
   methods: {
-    weekmap (days) {
-      return (weekdays.map(wd => ({ weekday: wd, details: (days.filter(d => d.date.day() === wd.day)) })))
-    }
+    // weekmap (days) {
+    //   return (weekdays.map(wd => ({ day: wd.day, weekday: wd, details: [] })))
+    // }
   }
 }
 
