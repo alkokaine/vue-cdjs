@@ -1,5 +1,5 @@
 <template>
-  <div class="cd-list">
+  <div class="cd-list container">
     <div v-if="$slots.header" class="cd-list--header">
       <slot name="header"></slot>
     </div>
