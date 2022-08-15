@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1660528846601" clover="3.2.0">
-  <project timestamp="1660528846601" name="All files">
-    <metrics statements="3" coveredstatements="3" conditionals="6" coveredconditionals="5" methods="3" coveredmethods="2" elements="12" coveredelements="10" complexity="0" loc="3" ncloc="3" packages="1" files="2" classes="2"/>
-    <file name="cd-day.vue" path="/home/sit19/dev/vue-cdjs/src/components/cd-day.vue">
-      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-      <line num="1" count="102" type="stmt"/>
-    </file>
-    <file name="cd-month.vue" path="/home/sit19/dev/vue-cdjs/src/components/cd-month.vue">
+<coverage generated="1660530960336" clover="3.2.0">
+  <project timestamp="1660530960336" name="All files">
+    <metrics statements="3" coveredstatements="2" conditionals="6" coveredconditionals="5" methods="3" coveredmethods="1" elements="12" coveredelements="8" complexity="0" loc="3" ncloc="3" packages="2" files="2" classes="2"/>
+    <package name="components">
       <metrics statements="2" coveredstatements="2" conditionals="6" coveredconditionals="5" methods="2" coveredmethods="1"/>
-      <line num="1" count="103" type="cond" truecount="5" falsecount="0"/>
-      <line num="28" count="1" type="cond" truecount="0" falsecount="1"/>
-    </file>
+      <file name="cd-month.vue" path="/home/sit19/dev/vue-cdjs/src/components/cd-month.vue">
+        <metrics statements="2" coveredstatements="2" conditionals="6" coveredconditionals="5" methods="2" coveredmethods="1"/>
+        <line num="1" count="103" type="cond" truecount="5" falsecount="0"/>
+        <line num="31" count="1" type="cond" truecount="0" falsecount="1"/>
+      </file>
+    </package>
+    <package name="views">
+      <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <file name="month-view.vue" path="/home/sit19/dev/vue-cdjs/src/views/month-view.vue">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+      </file>
+    </package>
   </project>
 </coverage>

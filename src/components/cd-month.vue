@@ -2,16 +2,19 @@
   <div class="cd-month container">
     <slot></slot>
     <div v-loading="isLoading" class="cd-days--container">
-      <cd-list :collection="weekdays" keyfield="day" rowClass="cd-weekday--container col px-0" list-class="list-unstyled container row w-auto">
+      <cd-list :collection="weekdays" keyfield="day" rowClass="cd-weekday--container col px-0" list-class="list-unstyled container-sm row w-auto flex-nowrap">
         <cd-list v-if="monthdays.length" slot-scope="{ row }" keyfield="day" class="cd-weekday--list-wrapper" list-class="cd-weekday--list px-0 list-unstyled container" row-class="cd-day border border-1 text-center" :collection="resolvedays(row)">
           <div slot="header" class="cd-weekday--header text-center" :class="[{ 'holiday': !sixDays && row.day === 6 || row.day === 0 }]">
             {{ row.weekday.short }}
           </div>
-          <cd-day slot-scope="day" class="cd-day--content p-2" :class="{ 'is-prev': day.row.isprev, 'holiday': (sixDays ? ((day.row.code === 1 && day.row.day !== 6)|| day.row.day === 0) : day.row.code === 1 )}">
+          <cd-day slot-scope="day" class="cd-day--wrap p-2" :class="{ 'is-prev': day.row.isprev, 'holiday': (sixDays ? ((day.row.code === 1 && day.row.day !== 6)|| day.row.day === 0) : day.row.code === 1 )}">
             <div slot="header" class="cd-day--header-content">
-              <slot name="header" :day="day.row">
+              <slot name="dayheader" :day="day.row">
                 {{ day.row.date.date() }}
               </slot>
+            </div>
+            <div class="cd-day--content">
+              <slot name="content" :day="day.row"></slot>
             </div>
           </cd-day>
         </cd-list>

@@ -2,7 +2,11 @@
   <div class="month">
     <el-date-picker v-model="currentdate" format="yyyy-MM-dd"></el-date-picker>
     <el-checkbox v-model="sixDays"></el-checkbox>
-    <cd-month :date="currentdate" :six-days="sixDays"></cd-month>
+    <cd-month :date="currentdate" :six-days="sixDays">
+      <span slot-scope="{ day }" slot="content">
+        {{ day }} жопа!
+      </span>
+    </cd-month>
   </div>
 </template>
 
