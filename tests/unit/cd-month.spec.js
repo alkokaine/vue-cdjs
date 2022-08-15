@@ -27,14 +27,6 @@ describe('cd-month', () => {
     sixDays: true,
     prependDays: false
   }
-
-  // const wrapper = shallowMount(CDMonth, {
-  //   propsData: propsData,
-  //   attrs: {
-  //     class: 'cd-month--test'
-  //   }
-  // })
-
   const month_header = testdate.format("MMM YYYY")
   const days_in_month = testdate.daysInMonth()
   const weekday = testdate.format('dddd')
