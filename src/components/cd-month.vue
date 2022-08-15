@@ -28,7 +28,6 @@ import { prevMonthDays, getDays, weekdays } from '@/common/month-days'
 import { Loading } from 'element-ui'
 import CDList from '@/components/cd-list.vue'
 import CDDay from '@/components/cd-day.vue'
-const formatter = (locale, date, options = { month: 'long' }) => (new Intl.DateTimeFormat(locale, options).format(date))
 
 export default {
   name: 'cd-month',
