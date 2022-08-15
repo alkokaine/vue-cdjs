@@ -1,7 +1,8 @@
 <template>
   <div class="month">
     <el-date-picker v-model="currentdate" format="yyyy-MM-dd"></el-date-picker>
-    <cd-month :date="currentdate"></cd-month>
+    <el-checkbox v-model="sixDays"></el-checkbox>
+    <cd-month :date="currentdate" :six-days="sixDays"></cd-month>
   </div>
 </template>
 
@@ -17,7 +18,8 @@ export default {
   },
   data () {
     return {
-      currentdate: new Date(Date.now())
+      currentdate: new Date(Date.now()),
+      sixDays: false
     }
   }
 }

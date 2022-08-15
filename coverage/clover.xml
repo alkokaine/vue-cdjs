@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1660498716752" clover="3.2.0">
-  <project timestamp="1660498716752" name="All files">
-    <metrics statements="31" coveredstatements="28" conditionals="9" coveredconditionals="7" methods="17" coveredmethods="13" elements="57" coveredelements="48" complexity="0" loc="31" ncloc="31" packages="3" files="4" classes="4"/>
+<coverage generated="1660524514603" clover="3.2.0">
+  <project timestamp="1660524514603" name="All files">
+    <metrics statements="30" coveredstatements="28" conditionals="7" coveredconditionals="6" methods="16" coveredmethods="13" elements="53" coveredelements="47" complexity="0" loc="30" ncloc="30" packages="2" files="3" classes="3"/>
     <package name="common">
-      <metrics statements="27" coveredstatements="25" conditionals="3" coveredconditionals="2" methods="13" coveredmethods="11"/>
+      <metrics statements="27" coveredstatements="25" conditionals="1" coveredconditionals="1" methods="13" coveredmethods="11"/>
       <file name="month-days.js" path="/home/sit19/dev/vue-cdjs/src/common/month-days.js">
-        <metrics statements="27" coveredstatements="25" conditionals="3" coveredconditionals="2" methods="13" coveredmethods="11"/>
+        <metrics statements="27" coveredstatements="25" conditionals="1" coveredconditionals="1" methods="13" coveredmethods="11"/>
         <line num="3" count="2" type="stmt"/>
         <line num="5" count="5" type="stmt"/>
         <line num="6" count="130" type="stmt"/>
@@ -45,13 +45,6 @@
         <metrics statements="2" coveredstatements="2" conditionals="6" coveredconditionals="5" methods="2" coveredmethods="1"/>
         <line num="1" count="70" type="cond" truecount="5" falsecount="0"/>
         <line num="24" count="1" type="cond" truecount="0" falsecount="1"/>
-      </file>
-    </package>
-    <package name="views">
-      <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-      <file name="month-view.vue" path="/home/sit19/dev/vue-cdjs/src/views/month-view.vue">
-        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="1" count="0" type="stmt"/>
       </file>
     </package>
   </project>
