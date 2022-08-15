@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/3</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
@@ -166,8 +166,12 @@
 <a name='L101'></a><a href='#L101'>101</a>
 <a name='L102'></a><a href='#L102'>102</a>
 <a name='L103'></a><a href='#L103'>103</a>
-<a name='L104'></a><a href='#L104'>104</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">70x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">70x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -269,17 +273,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
-  &lt;div class="cd-month"&gt;
+  &lt;div class="cd-month container"&gt;
     &lt;slot&gt;&lt;/slot&gt;
     &lt;div v-loading="isLoading" class="cd-days--container"&gt;
-      &lt;cd-list :collection="weekdays" keyfield="day" :rowClass="weekdayContainerClass" list-class="list-unstyled container row"&gt;
+      &lt;cd-list :collection="weekdays" keyfield="day" rowClass="cd-weekday--container col" list-class="list-unstyled container row"&gt;
         &lt;cd-list v-if="monthdays.length" slot-scope="{ row }" keyfield="day" class="cd-weekday--list-wrapper" list-class="cd-weekday--list list-unstyled container" row-class="cd-day p-1 m-1 border border-1 text-center" :collection="resolvedays(row)"&gt;
-          &lt;div slot="header" class="cd-weekday--header text-center"&gt;
+          &lt;div slot="header" class="cd-weekday--header text-center" :class="[{ 'holiday': !sixDays &amp;&amp; row.day === 6 || row.day === 0 }]"&gt;
             {{ row.weekday.short }}
           &lt;/div&gt;
-          &lt;cd-day slot-scope="day" :date="resolvedate(day.row)" class="cd-day--content" :class="{ 'is-prev': day.row.isprev }"&gt;
-            {{ day.row.date }}
+          &lt;cd-day slot-scope="day" :date="resolvedate(day.row)" class="cd-day--content" :class="{ 'is-prev': day.row.isprev, 'holiday': (sixDays ? ((day.row.code === 1 &amp;&amp; day.row.day !== 6)|| day.row.day === 0) : day.row.code === 1 )}"&gt;
           &lt;/cd-day&gt;
         &lt;/cd-list&gt;
       &lt;/cd-list&gt;
@@ -326,20 +335,25 @@ export default {
         if (newvalue !== undefined) {
           if (oldvalue === undefined || (newvalue.getFullYear() !== oldvalue.getFullYear() || newvalue.getMonth() !== oldvalue.getMonth() )) {
             month.isLoading = true
-            getDays(newvalue, { pre: 1, covid: 1, sd: month.sixDays }).then(response =&gt; {
+            getDays(newvalue, { pre: 1, covid: 1, sd: (month.sixDays === true ? 1 : 0) }).then(response =&gt; {
               month.monthdays = month.prependDays ? prevMonthDays(newvalue).concat(response) : response
               month.isLoading = false
             })
           }
         }
       }
+    },
+    sixDays: {
+      handler (newvalue) {
+        const month = this
+        getDays(month.date, { pre: 1, covid: 1, sd: (newvalue === true ? 1 : 0) }).then(response =&gt; {
+          month.monthdays = month.prependDays ? prevMonthDays(month.date).concat(response) : response
+          month.isLoading = false
+        })
+      }
     }
   },
   computed: {
-    weekdayContainerClass () {
-      const month = this
-      return (wd) =&gt; ['cd-weekday--container col', { 'holiday': wd.day === 0 || (wd.day === 6 &amp;&amp; !month.sixDays) }]
-    },
     weekdayid () {
       return (row, index) =&gt; row.day
     },
@@ -369,8 +383,9 @@ export default {
     cursor: default;
     user-select: none;
   }
-  .cd-weekday--container.holiday {
+  .holiday {
     color: salmon;
+    font-weight: bold;
   }
 &lt;/style&gt;</pre></td></tr></table></pre>
 
@@ -379,7 +394,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-08-14T15:44:46.623Z
+                at 2022-08-15T01:09:56.184Z
             </div>
         <script src="prettify.js"></script>
         <script>
