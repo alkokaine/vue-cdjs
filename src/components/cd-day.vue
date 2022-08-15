@@ -1,7 +1,10 @@
 <template>
   <div class="cd-day--block">
     <div class="cd-day--header">
-      <div class="cd-day--number">{{ date.getDate() }}</div>
+      <div class="cd-day--number">{{ date }}</div>
+    </div>
+    <div class="cd-day--content">
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -15,5 +18,7 @@ export default {
 </script>
 
 <style>
-
+  .cd-day--block {
+    cursor: pointer;
+  }
 </style>

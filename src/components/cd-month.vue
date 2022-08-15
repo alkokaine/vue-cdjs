@@ -1,14 +1,13 @@
 <template>
-  <div class="cd-month">
+  <div class="cd-month container">
     <slot></slot>
     <div v-loading="isLoading" class="cd-days--container">
       <cd-list :collection="weekdays" keyfield="day" rowClass="cd-weekday--container col" list-class="list-unstyled container row">
         <cd-list v-if="monthdays.length" slot-scope="{ row }" keyfield="day" class="cd-weekday--list-wrapper" list-class="cd-weekday--list list-unstyled container" row-class="cd-day p-1 m-1 border border-1 text-center" :collection="resolvedays(row)">
-          <div slot="header" class="cd-weekday--header text-center">
+          <div slot="header" class="cd-weekday--header text-center" :class="[{ 'holiday': !sixDays && row.day === 6 || row.day === 0 }]">
             {{ row.weekday.short }}
           </div>
-          <cd-day slot-scope="day" :date="resolvedate(day.row)" class="cd-day--content" :class="{ 'is-prev': day.row.isprev }">
-            {{ day.row.date }}
+          <cd-day slot-scope="day" :date="resolvedate(day.row)" class="cd-day--content" :class="{ 'is-prev': day.row.isprev, 'holiday': (sixDays ? ((day.row.code === 1 && day.row.day !== 6)|| day.row.day === 0) : day.row.code === 1 )}">
           </cd-day>
         </cd-list>
       </cd-list>
@@ -55,12 +54,21 @@ export default {
         if (newvalue !== undefined) {
           if (oldvalue === undefined || (newvalue.getFullYear() !== oldvalue.getFullYear() || newvalue.getMonth() !== oldvalue.getMonth() )) {
             month.isLoading = true
-            getDays(newvalue, { pre: 1, covid: 1, sd: month.sixDays }).then(response => {
+            getDays(newvalue, { pre: 1, covid: 1, sd: (month.sixDays === true ? 1 : 0) }).then(response => {
               month.monthdays = month.prependDays ? prevMonthDays(newvalue).concat(response) : response
               month.isLoading = false
             })
           }
         }
+      }
+    },
+    sixDays: {
+      handler (newvalue) {
+        const month = this
+        getDays(month.date, { pre: 1, covid: 1, sd: (newvalue === true ? 1 : 0) }).then(response => {
+          month.monthdays = month.prependDays ? prevMonthDays(month.date).concat(response) : response
+          month.isLoading = false
+        })
       }
     }
   },
@@ -93,5 +101,9 @@ export default {
     pointer-events: none;
     cursor: default;
     user-select: none;
+  }
+  .holiday {
+    color: salmon;
+    font-weight: bold;
   }
 </style>
