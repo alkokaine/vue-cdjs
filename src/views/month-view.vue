@@ -1,8 +1,11 @@
 <template>
   <div class="month">
-    <el-date-picker v-model="currentdate" format="yyyy-MM-dd"></el-date-picker>
-    <el-checkbox v-model="sixDays"></el-checkbox>
-    <cd-month :date="currentdate" :six-days="sixDays"></cd-month>
+    <cd-month :date="currentdate" :six-days="sixDays">
+      <div slot="month-header" class="month-config">
+        <el-date-picker v-model="currentdate" format="yyyy-MM-dd"></el-date-picker>
+        <el-checkbox v-model="sixDays"></el-checkbox>
+      </div>
+    </cd-month>
   </div>
 </template>
 

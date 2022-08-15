@@ -1,10 +1,13 @@
 <template>
   <div class="cd-month container">
-    <slot></slot>
-    <div v-loading="isLoading" class="cd-days--container">
-      <cd-list :collection="weekdays" keyfield="day" rowClass="cd-weekday--container col px-0" list-class="list-unstyled container-sm row w-auto flex-nowrap">
-        <cd-list v-if="monthdays.length" slot-scope="{ row }" keyfield="day" class="cd-weekday--list-wrapper" list-class="cd-weekday--list px-0 list-unstyled container" row-class="cd-day border border-1 text-center" :collection="resolvedays(row)">
-          <div slot="header" class="cd-weekday--header text-center" :class="[{ 'holiday': !sixDays && row.day === 6 || row.day === 0 }]">
+    <div v-loading="isLoading" class="cd-days--container mx-auto">
+      <cd-list :collection="weekdays" keyfield="day" rowClass="cd-weekday--container col px-0" list-class="list-unstyled container row w-auto flex-nowrap border border-x px-0 mx-2">
+        <div slot="header" class="month-header">
+          <slot name="month-header"></slot>
+        </div>
+        <slot name="header"></slot>
+        <cd-list v-if="monthdays.length" slot-scope="{ row }" keyfield="day" class="cd-weekday--list-wrapper px-0" list-class="cd-weekday--list list-unstyled container" row-class="cd-day text-center" :collection="resolvedays(row)">
+          <div slot="header" class="cd-weekday--header text-center border-bottom py-2 fw-bold" :class="[{ 'holiday': !sixDays && row.day === 6 || row.day === 0 }]">
             {{ row.weekday.short }}
           </div>
           <cd-day slot-scope="day" class="cd-day--wrap p-2" :class="{ 'is-prev': day.row.isprev, 'holiday': (sixDays ? ((day.row.code === 1 && day.row.day !== 6)|| day.row.day === 0) : day.row.code === 1 )}">
@@ -112,5 +115,8 @@ export default {
   .holiday {
     color: salmon;
     font-weight: bold;
+  }
+  .cd-days--container {
+    max-width: min-content;
   }
 </style>
