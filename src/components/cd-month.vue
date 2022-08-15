@@ -1,17 +1,17 @@
 <template>
   <div class="cd-month container">
     <div v-loading="isLoading" class="cd-days--container mx-auto">
-      <cd-list :collection="weekdays" keyfield="day" rowClass="cd-weekday--container col px-0" list-class="list-unstyled container row w-auto flex-nowrap border border-x px-0 mx-2">
+      <cd-list :collection="weekdays" keyfield="day" rowClass="cd-weekday--container col px-0" list-class="list-unstyled row w-auto flex-nowrap border border-x px-0 mx-2">
         <div slot="header" class="month-header">
           <slot name="month-header"></slot>
         </div>
         <slot name="header"></slot>
-        <cd-list v-if="monthdays.length" slot-scope="{ row }" keyfield="day" class="cd-weekday--list-wrapper px-0" list-class="cd-weekday--list list-unstyled container" row-class="cd-day text-center" :collection="resolvedays(row)">
+        <cd-list v-if="monthdays.length" slot-scope="{ row }" keyfield="day" class="cd-weekday--list-wrapper px-0" list-class="cd-weekday--list list-unstyled" row-class="cd-day" :collection="resolvedays(row)">
           <div slot="header" class="cd-weekday--header text-center border-bottom py-2 fw-bold" :class="[{ 'holiday': !sixDays && row.day === 6 || row.day === 0 }]">
             {{ row.weekday.short }}
           </div>
-          <cd-day slot-scope="day" class="cd-day--wrap p-2" :class="{ 'is-prev': day.row.isprev, 'holiday': (sixDays ? ((day.row.code === 1 && day.row.day !== 6)|| day.row.day === 0) : day.row.code === 1 )}">
-            <div slot="header" class="cd-day--header-content">
+          <cd-day slot-scope="day" class="cd-day--wrap" :class="{ 'is-prev': day.row.isprev, 'is-eve': day.row.code === 2, 'holiday': (sixDays ? ((day.row.code === 1 && day.row.day !== 6)|| day.row.day === 0) : day.row.code === 1 )}">
+            <div slot="header" class="cd-day--header-content text-center">
               <slot name="dayheader" :day="day.row">
                 {{ day.row.date.date() }}
               </slot>
@@ -118,5 +118,8 @@ export default {
   }
   .cd-days--container {
     max-width: min-content;
+  }
+  .is-eve {
+    opacity: 70%;
   }
 </style>

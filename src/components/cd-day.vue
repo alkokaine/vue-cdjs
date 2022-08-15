@@ -19,4 +19,10 @@ export default {
   .cd-day--block {
     cursor: pointer;
   }
+  .cd-day--block:hover {
+    background-color: #f1ebeb;
+  }
+  .cd-day--content {
+    min-width: 50px;
+  }
 </style>
