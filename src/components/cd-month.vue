@@ -1,27 +1,8 @@
 <template>
-  <div class="cd-month container">
-    <div v-loading="isLoading" class="cd-days--container mx-auto">
-      <cd-list :collection="weekdays" keyfield="day" rowClass="cd-weekday--container col px-0" list-class="list-unstyled row w-auto flex-nowrap border border-x px-0 mx-2">
-        <div slot="header" class="month-header">
-          <slot name="month-header"></slot>
-        </div>
-        <slot name="header"></slot>
-        <cd-list v-if="monthdays.length" slot-scope="{ row }" keyfield="day" class="cd-weekday--list-wrapper px-0" list-class="cd-weekday--list list-unstyled" row-class="cd-day" :collection="resolvedays(row)">
-          <div slot="header" class="cd-weekday--header text-center border-bottom py-2 fw-bold" :class="[{ 'holiday': !sixDays && row.day === 6 || row.day === 0 }]">
-            {{ row.weekday.short }}
-          </div>
-          <cd-day slot-scope="day" class="cd-day--wrap" :class="{ 'is-prev': day.row.isprev, 'is-eve': day.row.code === 2, 'holiday': (sixDays ? ((day.row.code === 1 && day.row.day !== 6)|| day.row.day === 0) : day.row.code === 1 )}">
-            <div slot="header" class="cd-day--header-content text-center">
-              <slot name="dayheader" :day="day.row">
-                {{ day.row.date.date() }}
-              </slot>
-            </div>
-            <div class="cd-day--content">
-              <slot name="content" :day="day.row"></slot>
-            </div>
-          </cd-day>
-        </cd-list>
-      </cd-list>
+  <div class="cd-month">
+    <slot></slot>
+    <div v-loading="isLoading" class="cd-days--container">
+      {{ days }}
     </div>
   </div>
 </template>
@@ -29,97 +10,45 @@
 <script>
 import { prevMonthDays, getDays, weekdays } from '@/common/month-days'
 import { Loading } from 'element-ui'
-import CDList from '@/components/cd-list.vue'
-import CDDay from '@/components/cd-day.vue'
+
+const formatter = (locale, date, options = { month: 'long' }) => (new Intl.DateTimeFormat(locale, options).format(date))
 
 export default {
   name: 'cd-month',
   props: {
-    date: { type: Date, required: true, description: 'Начальная дата календаря' },
     sixDays: { type: Boolean, default: false, description: 'Шестидневная рабочая неделя' },
+    date: { type: Date, required: true, description: 'Начальная дата календаря' },
     locale: { type: String, default: 'ru-RU', description: 'Локаль календаря' },
     prependDays: { type: Boolean, default: true, description: 'Дополнять ли массив дней месяца днями предыдущего месяца' }
   },
   directives: {
     'loading': Loading
   },
-  components: {
-    'cd-list': CDList,
-    'cd-day': CDDay
-  },
   data (calendar) {
     return {
-      weekdays,
-      monthdays: getDays(calendar.date).then(response => {
-        calendar.monthdays = calendar.prependDays ? prevMonthDays(calendar.date).concat(response) : response
+      days: getDays(calendar.date).then(response => {
+        calendar.days = calendar.prependDays
+          ? (prevMonthDays(calendar.date)).concat(response) 
+          : response,
         calendar.isLoading = false
       }),
       isLoading: Boolean
     }
   },
-  watch: {
-    date: {
-      handler (newvalue, oldvalue) {
-        const month = this
-        if (newvalue !== undefined) {
-          if (oldvalue === undefined || (newvalue.getFullYear() !== oldvalue.getFullYear() || newvalue.getMonth() !== oldvalue.getMonth() )) {
-            month.isLoading = true
-            getDays(newvalue, { pre: 1, covid: 1, sd: (month.sixDays === true ? 1 : 0) }).then(response => {
-              month.monthdays = month.prependDays ? prevMonthDays(newvalue).concat(response) : response
-              month.isLoading = false
-            })
-          }
-        }
-      }
-    },
-    sixDays: {
-      handler (newvalue) {
-        const month = this
-        getDays(month.date, { pre: 1, covid: 1, sd: (newvalue === true ? 1 : 0) }).then(response => {
-          month.monthdays = month.prependDays ? prevMonthDays(month.date).concat(response) : response
-          month.isLoading = false
-        })
-      }
-    }
-  },
   computed: {
-    weekdayid () {
-      return (row, index) => row.day
-    },
-    resolvedays () {
-      const month = this
-      return (row) => {
-        return month.monthdays.filter(d => d.date.day() === row.day)
-      }
-    },
-    resolvedate () {
-      return (row) => row.date.toDate()
+    weekdays () {
+      return this.weekmap(this.days)
     }
   },
   methods: {
+    weekmap (days) {
+      return (weekdays.map(wd => ({ weekday: wd, details: (days.filter(d => d.date.day() === wd.day)) })))
+    }
   }
 }
 
 </script>
 
 <style>
-  .cd-weekday--container {
-    max-width: min-content;
-  }
-  .is-prev {
-    opacity: 42%;
-    pointer-events: none;
-    cursor: default;
-    user-select: none;
-  }
-  .holiday {
-    color: salmon;
-    font-weight: bold;
-  }
-  .cd-days--container {
-    max-width: min-content;
-  }
-  .is-eve {
-    opacity: 70%;
-  }
+
 </style>
