@@ -28,7 +28,14 @@ const getDays = (date, options = { pre: 1, covid: 1, sd: 0 }) => {
     covid: options.covid,
     sd: options.sd
   }
-
+  const createDay = (index, code) => {
+    const date = createDate(params.year, params.month, index + 1)
+    if (isNaN(code)) {
+      if (options.sd) return  { date, code: date.day() === 0 }
+      else return { date, code: [0, 6].indexOf(date.day()) >= 0 }
+    }
+    return { date, code }
+  }
   return new Promise((resolve, reject) => {
     axios({
       url: 'https://isdayoff.ru/api/getdata',
@@ -36,11 +43,11 @@ const getDays = (date, options = { pre: 1, covid: 1, sd: 0 }) => {
       method: 'get'
     }).then(response => {
       days.push(...Array.from(response.request.response)
-        .map((m, index) => ({ date: createDate(params.year, params.month, index + 1), code: Number(m) }))
+        .map((m, index) => (createDay(index, Number(m))))
       )
     }).catch(reason => {
       days.push(...Array.from(Array(daysInMonth(params.year, params.month)).keys())
-        .map((m, index) => ({ date: createDate(params.year, params.month, index + 1) })))
+        .map((m, index) => (createDay(index))))
     }).finally(() => {
       resolve(days)
     })
